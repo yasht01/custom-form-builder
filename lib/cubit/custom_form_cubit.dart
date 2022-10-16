@@ -21,6 +21,11 @@ class CustomFormCubit extends Cubit<CustomFormState> {
     emit(CustomFormState.listChanged(containersList: _containersList));
   }
 
+  void removeOption(int index, String option) {
+    _containersList[index].options.remove(option);
+    emit(CustomFormState.listChanged(containersList: _containersList));
+  }
+
   void changeContainerType(int index, ContainerType containerType) {
     _containersList[index].copyWith(
       containerType: containerType,
@@ -31,9 +36,9 @@ class CustomFormCubit extends Cubit<CustomFormState> {
   void addNewContainer() {
     _containersList.add(ContainerData(
       index: _containersList.length,
-      containerType: ContainerType.checkbox,
-      options: [],
-      question: '',
+      containerType: ContainerType.Checkbox,
+      options: ['Option 1', 'Option 2'],
+      question: 'Question 1',
     ));
     emit(CustomFormState.listChanged(containersList: _containersList));
   }

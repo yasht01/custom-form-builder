@@ -27,50 +27,98 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(
-        minHeight: 300,
-        minWidth: 300,
+      margin: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5.0),
+        border: Border.all(color: Colors.grey),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              TextFormField(
-                controller: _questionController,
-                initialValue: 'Question',
-              ),
-              DropdownButtonFormField<ContainerType>(
-                items: ContainerType.values
-                    .map<DropdownMenuItem<ContainerType>>(
-                      (e) => DropdownMenuItem(
-                        child: Text(e.toShortString()),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (newType) {
-                  if (newType != null) {
-                    context
-                        .read<CustomFormCubit>()
-                        .changeContainerType(0, newType);
-                  }
-                },
-              )
-            ],
-          ),
-          ...widget.containerData.options.map<Widget>(
-            (option) => Row(
+      constraints: const BoxConstraints(
+        maxWidth: 750,
+        maxHeight: 500,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                const Checkbox(value: false, onChanged: null),
-                Text(option),
+                Flexible(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: _questionController,
+                      decoration: InputDecoration(
+                        hintText: 'Question',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Spacer(flex: 1),
+                Flexible(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButtonFormField<ContainerType>(
+                      value: ContainerType.Checkbox,
+                      items: ContainerType.values
+                          .map<DropdownMenuItem<ContainerType>>(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e.toShortString()),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (newType) {
+                        if (newType != null) {
+                          context.read<CustomFormCubit>().changeContainerType(
+                              0, newType); //TODO: Think how to manage index
+                        }
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.delete),
-          ),
-        ],
+            ...widget.containerData.options.map<Widget>(
+              (option) => Container(
+                width: 400,
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Checkbox(value: false, onChanged: null),
+                    Text(option),
+                    const Spacer(),
+                    const Icon(Icons.close),
+                  ],
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.delete),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

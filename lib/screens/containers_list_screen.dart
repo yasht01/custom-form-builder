@@ -17,12 +17,17 @@ class ContainersListScreen extends StatelessWidget {
           initial: (_) => const CircularProgressIndicator(),
           listChanged: (state) {
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 ...state.containersList.map<Widget>(
-                  (containerData) =>
-                      containerData.containerType == ContainerType.checkbox
-                          ? CheckboxTemplate(containerData: containerData)
-                          : DropdownTemplate(containerData: containerData),
+                  (containerData) => containerData.containerType ==
+                          ContainerType.Checkbox
+                      ? Center(
+                          child: CheckboxTemplate(containerData: containerData),
+                        )
+                      : Center(
+                          child: DropdownTemplate(containerData: containerData),
+                        ),
                 )
               ],
             );

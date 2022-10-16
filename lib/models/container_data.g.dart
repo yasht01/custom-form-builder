@@ -24,6 +24,6 @@ Map<String, dynamic> _$ContainerDataToJson(ContainerData instance) =>
     };
 
 const _$ContainerTypeEnumMap = {
-  ContainerType.checkbox: 'checkbox',
-  ContainerType.dropdown: 'dropdown',
+  ContainerType.Checkbox: 'Checkbox',
+  ContainerType.Dropdown: 'Dropdown',
 };
