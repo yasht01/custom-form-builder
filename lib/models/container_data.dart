@@ -16,6 +16,18 @@ class ContainerData {
     required this.question,
   });
 
+  ContainerData copyWith({
+    ContainerType? containerType,
+    List<String>? options,
+    String? question,
+  }) {
+    return ContainerData(
+      containerType: containerType ?? this.containerType,
+      options: options ?? this.options,
+      question: question ?? this.question,
+    );
+  }
+
   factory ContainerData.fromJson(Map<String, dynamic> json) =>
       _$ContainerDataFromJson(json);
 

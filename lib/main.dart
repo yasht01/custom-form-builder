@@ -13,6 +13,7 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Custom Form Builder',
+      debugShowCheckedModeBanner: false,
       home: HomeScreen(),
     );
   }
