@@ -15,13 +15,21 @@ ContainerData _$ContainerDataFromJson(Map<String, dynamic> json) =>
       question: json['question'] as String,
     );
 
-Map<String, dynamic> _$ContainerDataToJson(ContainerData instance) =>
-    <String, dynamic>{
-      'index': instance.index,
-      'containerType': _$ContainerTypeEnumMap[instance.containerType]!,
-      'options': instance.options,
-      'question': instance.question,
-    };
+Map<String, dynamic> _$ContainerDataToJson(ContainerData instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('index', ContainerData.toNull(instance.index));
+  val['containerType'] = _$ContainerTypeEnumMap[instance.containerType]!;
+  val['options'] = instance.options;
+  val['question'] = instance.question;
+  return val;
+}
 
 const _$ContainerTypeEnumMap = {
   ContainerType.Checkbox: 'Checkbox',

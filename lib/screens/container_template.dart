@@ -5,31 +5,27 @@ import '../../cubit/custom_form_cubit.dart';
 import '../../models/container_data.dart';
 import '../../utils/enums.dart';
 
-class CheckboxTemplate extends StatefulWidget {
+class ContainerTemplate extends StatefulWidget {
+  final int index;
   final ContainerData containerData;
-  const CheckboxTemplate({
+
+  const ContainerTemplate({
     super.key,
+    required this.index,
     required this.containerData,
   });
 
   @override
-  State<CheckboxTemplate> createState() => _CheckboxTemplateState();
+  State<ContainerTemplate> createState() => _ContainerTemplateState();
 }
 
-class _CheckboxTemplateState extends State<CheckboxTemplate> {
+class _ContainerTemplateState extends State<ContainerTemplate> {
   late TextEditingController _questionController;
   final List<TextEditingController> _controllers = [];
 
   @override
-  void initState() {
-    super.initState();
-    _questionController = TextEditingController();
-  }
-
-  @override
   void dispose() {
     _questionController.dispose();
-
     super.dispose();
   }
 
@@ -38,6 +34,8 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
     widget.containerData.options
         .map((option) => _controllers.add(TextEditingController(text: option)))
         .toList();
+    _questionController =
+        TextEditingController(text: widget.containerData.question);
 
     return Container(
       margin: const EdgeInsets.all(8.0),
@@ -47,8 +45,8 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
         border: Border.all(color: Colors.grey),
       ),
       constraints: const BoxConstraints(
-        maxWidth: 750,
-        maxHeight: 500,
+        maxWidth: 700,
+        minHeight: 200,
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -71,6 +69,9 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
                           borderSide: const BorderSide(color: Colors.grey),
                         ),
                       ),
+                      onChanged: (value) => context
+                          .read<CustomFormCubit>()
+                          .updateQuestion(widget.index, value),
                     ),
                   ),
                 ),
@@ -80,7 +81,7 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownButtonFormField<ContainerType>(
-                      value: ContainerType.Checkbox,
+                      value: widget.containerData.containerType,
                       items: ContainerType.values
                           .map<DropdownMenuItem<ContainerType>>(
                             (e) => DropdownMenuItem(
@@ -102,7 +103,7 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
                         if (newType != null) {
                           context
                               .read<CustomFormCubit>()
-                              .changeContainerType(0, newType);
+                              .changeContainerType(widget.index, newType);
                         }
                       },
                       decoration: InputDecoration(
@@ -123,16 +124,24 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Checkbox(value: false, onChanged: null),
+                    widget.containerData.containerType == ContainerType.Checkbox
+                        ? const Checkbox(value: false, onChanged: null)
+                        : Text("${i + 1} ."),
                     Expanded(
                       child: TextFormField(
                         controller: _controllers[i],
+                        onChanged: (newValue) => context
+                            .read<CustomFormCubit>()
+                            .updateOption(widget.index, i, newValue),
                       ),
                     ),
                     const Spacer(),
                     IconButton(
                       icon: const Icon(Icons.close),
-                      onPressed: () {},
+                      onPressed: () => context
+                          .read<CustomFormCubit>()
+                          .removeOption(
+                              widget.index, widget.containerData.options[i]),
                     ),
                   ],
                 ),
@@ -142,11 +151,15 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => context
+                      .read<CustomFormCubit>()
+                      .addNewOption(widget.index, 'Option'),
                   icon: const Icon(Icons.add_circle),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => context
+                      .read<CustomFormCubit>()
+                      .deleteContainer(widget.index),
                   icon: const Icon(Icons.delete),
                 ),
               ],

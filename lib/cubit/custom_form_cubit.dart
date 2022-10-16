@@ -58,7 +58,7 @@ class CustomFormCubit extends Cubit<CustomFormState> {
     _containersList.add(ContainerData(
       index: _containersList.length,
       containerType: ContainerType.Dropdown,
-      options: const ['Option 1', 'Option 2'],
+      options: const ['Option 1'],
       question: 'Question 1',
     ));
 

@@ -7,10 +7,13 @@ part 'container_data.g.dart';
 
 @JsonSerializable()
 class ContainerData extends Equatable {
+  @JsonKey(toJson: toNull, includeIfNull: false)
   final int index;
   final ContainerType containerType;
   final List<String> options;
   final String question;
+
+  static toNull(_) => null;
 
   const ContainerData({
     required this.index,

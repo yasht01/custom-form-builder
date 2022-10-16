@@ -1,11 +1,9 @@
+import 'package:custom_form_builder/screens/container_template.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/container_data.dart';
-import 'templates/checkbox_widget.dart';
-import 'templates/dropdown_widget.dart';
 import '../cubit/custom_form_cubit.dart';
-import '../utils/enums.dart';
 
 class ContainersListScreen extends StatelessWidget {
   const ContainersListScreen({super.key});
@@ -24,16 +22,12 @@ class ContainersListScreen extends StatelessWidget {
 
     for (var i = 0; i < dataList.length - 1; i++) {
       widgetList.add(
-        dataList[i].containerType == ContainerType.Checkbox
-            ? Center(
-                child: CheckboxTemplate(containerData: dataList[i]),
-              )
-            : Center(
-                child: DropdownTemplate(
-                  containerData: dataList[i],
-                  index: i,
-                ),
-              ),
+        Center(
+          child: ContainerTemplate(
+            containerData: dataList[i],
+            index: i,
+          ),
+        ),
       );
     }
 
@@ -42,16 +36,12 @@ class ContainersListScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (dataList.isNotEmpty) ...[
-          dataList.last.containerType == ContainerType.Checkbox
-              ? Center(
-                  child: CheckboxTemplate(containerData: dataList.last),
-                )
-              : Center(
-                  child: DropdownTemplate(
-                    containerData: dataList.last,
-                    index: dataList.length - 1,
-                  ),
-                ),
+          Center(
+            child: ContainerTemplate(
+              containerData: dataList.last,
+              index: dataList.length - 1,
+            ),
+          ),
         ],
         Container(
           margin: const EdgeInsets.all(8.0),
