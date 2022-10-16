@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../utils/constants.dart';
+import '../cubit/custom_form_cubit.dart';
+import 'containers_list_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,34 +27,9 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Container(
-          constraints: const BoxConstraints(
-            minWidth: 450,
-            minHeight: 200,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              OutlinedButton(
-                onPressed: () {},
-                style: kOutlinedButtonStyle,
-                child: const Text('Select dropdown'),
-              ),
-              OutlinedButton(
-                onPressed: () {},
-                style: kOutlinedButtonStyle,
-                child: const Text('Checkbox'),
-              ),
-            ],
-          ),
-        ),
+      body: BlocProvider(
+        create: (context) => CustomFormCubit(),
+        child: const ContainersListScreen(),
       ),
     );
   }

@@ -8,6 +8,7 @@ part of 'container_data.dart';
 
 ContainerData _$ContainerDataFromJson(Map<String, dynamic> json) =>
     ContainerData(
+      index: json['index'] as int,
       containerType: $enumDecode(_$ContainerTypeEnumMap, json['containerType']),
       options:
           (json['options'] as List<dynamic>).map((e) => e as String).toList(),
@@ -16,6 +17,7 @@ ContainerData _$ContainerDataFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ContainerDataToJson(ContainerData instance) =>
     <String, dynamic>{
+      'index': instance.index,
       'containerType': _$ContainerTypeEnumMap[instance.containerType]!,
       'options': instance.options,
       'question': instance.question,
