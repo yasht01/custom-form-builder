@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DropdownTemplate extends StatefulWidget {
+  final int index;
   final ContainerData containerData;
+
   const DropdownTemplate({
     super.key,
+    required this.index,
     required this.containerData,
   });
 
@@ -17,18 +20,11 @@ class DropdownTemplate extends StatefulWidget {
 
 class _DropdownTemplateState extends State<DropdownTemplate> {
   late TextEditingController _questionController;
-  List<TextEditingController> _controllers = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _questionController = TextEditingController();
-  }
+  final List<TextEditingController> _controllers = [];
 
   @override
   void dispose() {
     _questionController.dispose();
-
     super.dispose();
   }
 
@@ -37,6 +33,7 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
     widget.containerData.options
         .map((option) => _controllers.add(TextEditingController(text: option)))
         .toList();
+    _questionController = TextEditingController(text: widget.containerData.question);
 
     return Container(
       margin: const EdgeInsets.all(8.0),
@@ -47,7 +44,7 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
       ),
       constraints: const BoxConstraints(
         maxWidth: 700,
-        maxHeight: 500,
+        minHeight: 300,
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -70,6 +67,9 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
                           borderSide: const BorderSide(color: Colors.grey),
                         ),
                       ),
+                      onChanged: (value) => context
+                          .read<CustomFormCubit>()
+                          .updateQuestion(widget.index, value),
                     ),
                   ),
                 ),
@@ -99,8 +99,9 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
                           .toList(),
                       onChanged: (newType) {
                         if (newType != null) {
-                          context.read<CustomFormCubit>().changeContainerType(
-                              0, newType); //TODO: Think how to manage index
+                          context
+                              .read<CustomFormCubit>()
+                              .changeContainerType(widget.index, newType);
                         }
                       },
                       decoration: InputDecoration(
@@ -125,6 +126,9 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
                     Expanded(
                       child: TextFormField(
                         controller: _controllers[i],
+                        onChanged: (newValue) => context
+                            .read<CustomFormCubit>()
+                            .updateOption(widget.index, i, newValue),
                       ),
                     ),
                     const Spacer(),
@@ -132,7 +136,8 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
                       icon: const Icon(Icons.close),
                       onPressed: () => context
                           .read<CustomFormCubit>()
-                          .removeOption(1, widget.containerData.options[i]),
+                          .removeOption(
+                              widget.index, widget.containerData.options[i]),
                     ),
                   ],
                 ),
@@ -142,11 +147,14 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () =>
+                      context.read<CustomFormCubit>().addNewOption(widget.index, 'Option'),
                   icon: const Icon(Icons.add_circle),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => context
+                      .read<CustomFormCubit>()
+                      .deleteContainer(widget.index),
                   icon: const Icon(Icons.delete),
                 ),
               ],

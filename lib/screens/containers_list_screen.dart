@@ -13,11 +13,13 @@ class ContainersListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CustomFormCubit, CustomFormState>(
-      builder: (context, state) => generateList(state.containersList),
+      builder: (context, state) => SingleChildScrollView(
+        child: generateList(context, state.containersList),
+      ),
     );
   }
 
-  Widget generateList(List<ContainerData> dataList) {
+  Widget generateList(BuildContext context, List<ContainerData> dataList) {
     List<Widget> widgetList = [];
 
     for (var i = 0; i < dataList.length - 1; i++) {
@@ -27,7 +29,10 @@ class ContainersListScreen extends StatelessWidget {
                 child: CheckboxTemplate(containerData: dataList[i]),
               )
             : Center(
-                child: DropdownTemplate(containerData: dataList[i]),
+                child: DropdownTemplate(
+                  containerData: dataList[i],
+                  index: i,
+                ),
               ),
       );
     }
@@ -42,7 +47,10 @@ class ContainersListScreen extends StatelessWidget {
                   child: CheckboxTemplate(containerData: dataList.last),
                 )
               : Center(
-                  child: DropdownTemplate(containerData: dataList.last),
+                  child: DropdownTemplate(
+                    containerData: dataList.last,
+                    index: dataList.length - 1,
+                  ),
                 ),
         ],
         Container(
@@ -52,7 +60,7 @@ class ContainersListScreen extends StatelessWidget {
             color: Colors.white,
           ),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () => context.read<CustomFormCubit>().addNewContainer(),
             icon: const Icon(Icons.add),
           ),
         ),

@@ -1,7 +1,7 @@
+import 'package:custom_form_builder/cubit/custom_form_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/custom_form_cubit.dart';
 import 'containers_list_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -21,16 +21,13 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-              onPressed: () {}, //TODO: console.log() it
+              onPressed: () => print(context.read<CustomFormCubit>().getContainersModel()),
               child: const Text('Submit'),
             ),
           ),
         ],
       ),
-      body: BlocProvider(
-        create: (context) => CustomFormCubit(),
-        child: const ContainersListScreen(),
-      ),
+      body: const ContainersListScreen(),
     );
   }
 }

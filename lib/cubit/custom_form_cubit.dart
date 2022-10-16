@@ -1,5 +1,6 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 
 import '../models/container_data.dart';
 import '../utils/enums.dart';
@@ -11,17 +12,37 @@ class CustomFormCubit extends Cubit<CustomFormState> {
     addNewContainer();
   }
 
-  final List<ContainerData> _containersList = [];
+  List<ContainerData> _containersList = [];
+
+  String getContainersModel() {
+    return jsonEncode(_containersList);
+  }
 
   void addNewOption(int index, String option) {
-    _containersList[index] = _containersList[index].copyWith(
-      options: [..._containersList[index].options] + [option],
-    );
+    var tempList = [..._containersList[index].options];
+    tempList.add(option);
+    _containersList[index] = _containersList[index].copyWith(options: tempList);
+
     emit(CustomFormState(containersList: _containersList));
   }
 
+  void updateQuestion(int index, String question) {
+    _containersList[index] = _containersList[index].copyWith(
+      question: question,
+    );
+  }
+
+  void updateOption(int index, int optionIndex, String newValue) {
+    var tempList = [..._containersList[index].options];
+    tempList[optionIndex] = newValue;
+    _containersList[index] = _containersList[index].copyWith(options: tempList);
+  }
+
   void removeOption(int index, String option) {
-    _containersList[index].options.remove(option);
+    var tempList = [..._containersList[index].options];
+    tempList.remove(option);
+    _containersList[index] = _containersList[index].copyWith(options: tempList);
+
     emit(CustomFormState(containersList: _containersList));
   }
 
@@ -29,6 +50,7 @@ class CustomFormCubit extends Cubit<CustomFormState> {
     _containersList[index] = _containersList[index].copyWith(
       containerType: containerType,
     );
+
     emit(CustomFormState(containersList: _containersList));
   }
 
@@ -39,11 +61,15 @@ class CustomFormCubit extends Cubit<CustomFormState> {
       options: const ['Option 1', 'Option 2'],
       question: 'Question 1',
     ));
+
     emit(CustomFormState(containersList: _containersList));
   }
 
   void deleteContainer(int index) {
-    _containersList.removeAt(index);
+    var tempList = [..._containersList];
+    tempList.removeAt(index);
+    _containersList = tempList;
+
     emit(CustomFormState(containersList: _containersList));
   }
 }
