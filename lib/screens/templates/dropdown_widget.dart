@@ -1,8 +1,9 @@
-import 'package:custom_form_builder/cubit/custom_form_cubit.dart';
-import 'package:custom_form_builder/models/container_data.dart';
-import 'package:custom_form_builder/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../cubit/custom_form_cubit.dart';
+import '../../models/container_data.dart';
+import '../../utils/enums.dart';
 
 class DropdownTemplate extends StatefulWidget {
   final int index;

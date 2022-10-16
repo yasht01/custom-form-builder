@@ -1,8 +1,9 @@
-import 'package:custom_form_builder/cubit/custom_form_cubit.dart';
-import 'package:custom_form_builder/models/container_data.dart';
-import 'package:custom_form_builder/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../cubit/custom_form_cubit.dart';
+import '../../models/container_data.dart';
+import '../../utils/enums.dart';
 
 class CheckboxTemplate extends StatefulWidget {
   final ContainerData containerData;
@@ -17,7 +18,7 @@ class CheckboxTemplate extends StatefulWidget {
 
 class _CheckboxTemplateState extends State<CheckboxTemplate> {
   late TextEditingController _questionController;
-  List<TextEditingController> _controllers = [];
+  final List<TextEditingController> _controllers = [];
 
   @override
   void initState() {
@@ -99,8 +100,9 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
                           .toList(),
                       onChanged: (newType) {
                         if (newType != null) {
-                          context.read<CustomFormCubit>().changeContainerType(
-                              0, newType); //TODO: Think how to manage index
+                          context
+                              .read<CustomFormCubit>()
+                              .changeContainerType(0, newType);
                         }
                       },
                       decoration: InputDecoration(
@@ -129,7 +131,7 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
                     ),
                     const Spacer(),
                     IconButton(
-                      icon: Icon(Icons.close),
+                      icon: const Icon(Icons.close),
                       onPressed: () {},
                     ),
                   ],
