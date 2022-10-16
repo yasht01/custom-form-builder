@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../utils/enums.dart';
@@ -5,7 +6,7 @@ import '../utils/enums.dart';
 part 'container_data.g.dart';
 
 @JsonSerializable()
-class ContainerData {
+class ContainerData extends Equatable {
   final int index;
   final ContainerType containerType;
   final List<String> options;
@@ -36,4 +37,7 @@ class ContainerData {
       _$ContainerDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$ContainerDataToJson(this);
+
+  @override
+  List<Object> get props => [index, containerType, options, question];
 }

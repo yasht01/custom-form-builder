@@ -13,21 +13,11 @@ class ContainersListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CustomFormCubit, CustomFormState>(
-      builder: (context, state) {
-        return state.map(
-          initial: (_) => const CircularProgressIndicator(),
-          listChanged: (state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: generateList(state.containersList),
-            );
-          },
-        );
-      },
+      builder: (context, state) => generateList(state.containersList),
     );
   }
 
-  List<Widget> generateList(List<ContainerData> dataList) {
+  Widget generateList(List<ContainerData> dataList) {
     List<Widget> widgetList = [];
 
     for (var i = 0; i < dataList.length - 1; i++) {
@@ -46,13 +36,15 @@ class ContainersListScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        dataList.last.containerType == ContainerType.Checkbox
-            ? Center(
-                child: CheckboxTemplate(containerData: dataList.last),
-              )
-            : Center(
-                child: DropdownTemplate(containerData: dataList.last),
-              ),
+        if (dataList.isNotEmpty) ...[
+          dataList.last.containerType == ContainerType.Checkbox
+              ? Center(
+                  child: CheckboxTemplate(containerData: dataList.last),
+                )
+              : Center(
+                  child: DropdownTemplate(containerData: dataList.last),
+                ),
+        ],
         Container(
           margin: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
@@ -67,6 +59,9 @@ class ContainersListScreen extends StatelessWidget {
       ],
     ));
 
-    return widgetList;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: widgetList,
+    );
   }
 }

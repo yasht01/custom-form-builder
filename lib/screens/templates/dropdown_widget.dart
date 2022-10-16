@@ -17,6 +17,7 @@ class DropdownTemplate extends StatefulWidget {
 
 class _DropdownTemplateState extends State<DropdownTemplate> {
   late TextEditingController _questionController;
+  List<TextEditingController> _controllers = [];
 
   @override
   void initState() {
@@ -25,7 +26,18 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
   }
 
   @override
+  void dispose() {
+    _questionController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    widget.containerData.options
+        .map((option) => _controllers.add(TextEditingController(text: option)))
+        .toList();
+
     return Container(
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -110,18 +122,29 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text("${i + 1} ."),
-                    Text(widget.containerData.options[i]),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _controllers[i],
+                      ),
+                    ),
                     const Spacer(),
-                    const MouseRegion(
-                      child: Icon(Icons.close),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => context
+                          .read<CustomFormCubit>()
+                          .removeOption(1, widget.containerData.options[i]),
                     ),
                   ],
                 ),
               ),
             ],
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.add_circle),
+                ),
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(Icons.delete),

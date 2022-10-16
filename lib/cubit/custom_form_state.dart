@@ -1,10 +1,9 @@
 part of 'custom_form_cubit.dart';
 
-@freezed
-class CustomFormState with _$CustomFormState {
-  const factory CustomFormState.initial() = _Initial;
+class CustomFormState {
+  final List<ContainerData> containersList;
 
-  const factory CustomFormState.listChanged({
-    required List<ContainerData> containersList,
-  }) = _ListChanged;
+  const CustomFormState({
+    this.containersList = const [],
+  });
 }

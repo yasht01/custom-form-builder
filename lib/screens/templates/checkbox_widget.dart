@@ -17,6 +17,7 @@ class CheckboxTemplate extends StatefulWidget {
 
 class _CheckboxTemplateState extends State<CheckboxTemplate> {
   late TextEditingController _questionController;
+  List<TextEditingController> _controllers = [];
 
   @override
   void initState() {
@@ -25,7 +26,18 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
   }
 
   @override
+  void dispose() {
+    _questionController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    widget.containerData.options
+        .map((option) => _controllers.add(TextEditingController(text: option)))
+        .toList();
+
     return Container(
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -102,24 +114,35 @@ class _CheckboxTemplateState extends State<CheckboxTemplate> {
                 )
               ],
             ),
-            ...widget.containerData.options.map<Widget>(
-              (option) => Container(
+            for (var i = 0; i < widget.containerData.options.length; i++) ...[
+              Container(
                 width: 400,
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Checkbox(value: false, onChanged: null),
-                    Text(option),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _controllers[i],
+                      ),
+                    ),
                     const Spacer(),
-                    const Icon(Icons.close),
+                    IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {},
+                    ),
                   ],
                 ),
               ),
-            ),
+            ],
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.add_circle),
+                ),
                 IconButton(
                   onPressed: () {},
                   icon: const Icon(Icons.delete),
