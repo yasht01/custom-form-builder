@@ -1,0 +1,1 @@
+enum ContainerType {checkbox, dropdown}
