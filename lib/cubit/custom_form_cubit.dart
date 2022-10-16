@@ -36,7 +36,7 @@ class CustomFormCubit extends Cubit<CustomFormState> {
   void addNewContainer() {
     _containersList.add(ContainerData(
       index: _containersList.length,
-      containerType: ContainerType.Checkbox,
+      containerType: ContainerType.Dropdown,
       options: ['Option 1', 'Option 2'],
       question: 'Question 1',
     ));

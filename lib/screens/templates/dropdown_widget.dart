@@ -46,7 +46,7 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
             Row(
               children: [
                 Flexible(
-                  flex: 3,
+                  flex: 5,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
@@ -63,7 +63,7 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
                 ),
                 const Spacer(flex: 1),
                 Flexible(
-                  flex: 1,
+                  flex: 2,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownButtonFormField<ContainerType>(
@@ -72,7 +72,16 @@ class _DropdownTemplateState extends State<DropdownTemplate> {
                           .map<DropdownMenuItem<ContainerType>>(
                             (e) => DropdownMenuItem(
                               value: e,
-                              child: Text(e.toShortString()),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    e == ContainerType.Checkbox
+                                        ? Icons.check_box
+                                        : Icons.looks_one,
+                                  ),
+                                  Text(e.toShortString()),
+                                ],
+                              ),
                             ),
                           )
                           .toList(),
